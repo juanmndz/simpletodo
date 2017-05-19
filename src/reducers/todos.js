@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 
-import { CREATE_TODO } from '../actions/todos';
+import { CREATE_TODO, COMPLETED_TODO, DELETE_TODO, DELETED_ALL_COMPLETED_TODO } from '../actions/todos';
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -13,6 +13,19 @@ export default (state = [], action) => {
           completed: false,
         }
       ];
+    case COMPLETED_TODO:
+      return state.map(todo =>
+        (todo.id === action.id
+        ? {
+          ...todo,
+          completed: !todo.completed
+        }
+        : todo)
+      )
+    case DELETE_TODO:
+      return state.filter(todo => todo.id !== action.id)
+    case DELETED_ALL_COMPLETED_TODO:
+      return state.filter(todo => !todo.completed);
     default:
       return state;
   }
