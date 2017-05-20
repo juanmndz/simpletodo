@@ -1,18 +1,6 @@
-/**
- *
- * SPEC
- *
- * Create a todo
- * List all todos
- * Click for completed todo
- * Delete a todo
- * Deleted all completed todos
- *
- *
- */
+import uuid from 'uuid/v4';
 
 import TodoApi from '../utils/api/todoApi';
-import uuid from 'uuid/v4';
 
 export const FETCH_TODOS = 'FETCH_TODOS';
 export const FETCH_TODOS_SUCCESS = 'FETCH_TODOS_SUCCESS';
@@ -24,7 +12,14 @@ export const CREATE_TODO_ERROR = 'CREATE_TODO_ERROR';
 
 
 export const COMPLETED_TODO = 'COMPLETED_TODO';
+export const COMPLETED_TODO_SUCCESS = 'COMPLETED_TODO_SUCCESS';
+export const COMPLETED_TODO_ERROR = 'COMPLETED_TODO_ERROR';
+
 export const DELETED_TODO = 'DELETED_TODO';
+export const DELETED_TODO_SUCCESS = 'DELETED_TODO_SUCCESS';
+export const DELETED_TODO_ERROR = 'DELETED_TODO_ERROR';
+
+
 export const DELETED_ALL_COMPLETED_TODO = 'DELETED_ALL_COMPLETED_TODO';
 
 export function fetchTodos() {
@@ -43,17 +38,18 @@ export function fetchTodos() {
 }
 
 export function createTodo(text) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
 
     const todo = {
       text,
       id: uuid(),
-      completedTodo
+      completed: false
     }
+
     dispatch({ type: CREATE_TODO, todo });
 
     try {
-      await TodoApi.createTodo({ todo });
+      await TodoApi.createTodo(todo);
 
       return dispatch({ type: CREATE_TODO_SUCCESS });
     } catch (error) {
@@ -67,16 +63,39 @@ export function createTodo(text) {
 }
 
 export function completedTodo(id) {
-  return {
-    type: COMPLETED_TODO,
-    id
+  return async (dispatch, getState) => {
+    await dispatch({ type: COMPLETED_TODO, id });
+    const todo = getState().todos.data.filter(todo => todo.id === id)[0];
+
+    try {
+      await TodoApi.completedTodo(todo);
+      return dispatch({ type: COMPLETED_TODO_SUCCESS });
+    } catch (error) {
+      return dispatch({
+        type: COMPLETED_TODO_ERROR,
+        error,
+        id
+      });
+    }
   }
 }
 
 export function deletedTodo(id) {
-  return {
-    type: DELETED_TODO,
-    id
+  return async (dispatch, getState) => {
+    const todo = getState().todos.data.filter(todo => todo.id === id)[0];
+
+    dispatch({ type: DELETED_TODO, id });
+
+    try {
+      await TodoApi.deletedTodo(id);
+      return dispatch({ type: DELETED_TODO_SUCCESS });
+    } catch (error) {
+      return dispatch({
+        type: DELETED_TODO_ERROR,
+        error,
+        todo,
+      });
+    }
   }
 }
 

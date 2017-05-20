@@ -1,26 +1,14 @@
 {
   "todos": [
     {
-      "text": "Hello",
-      "id": "2bbecb68-9382-4777-8de8-0ae18d2d2345",
+      "text": "cc",
+      "id": "b8333feb-3ca8-407d-9b52-b590cbd5ded7",
       "completed": false
     },
     {
-      "text": "Hello World",
-      "id": "9dc44cef-cb86-45e1-9897-0a68399f4847",
-      "completed": false
-    },
-    {
-      "text": "dd",
-      "id": "bfe08382-04a9-40b3-baf1-8f562706f9ea",
-      "completed": false
-    },
-    {
-      "todo": {
-        "text": "Welcome",
-        "id": "2ea3e668-f748-4498-8a21-492d150b250b"
-      },
-      "id": "Hk979MRlZ"
+      "text": "cc",
+      "id": "364fb9df-bf70-4dc6-98dc-f82300b36b8e",
+      "completed": true
     }
   ]
 }

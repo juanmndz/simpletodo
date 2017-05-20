@@ -1,14 +1,15 @@
 import React from 'react';
 
-export default function Todo({ text, completed }) {
+export default function Todo({ text, completed, handleDeleted, handleCompleted }) {
   return (
     <div>
       {text}
       <input
         type="checkbox"
         value={completed}
+        onChange={handleCompleted}
       />
-      <button>Delete Me</button>
+      <button onClick={handleDeleted}>Delete Me</button>
     </div>
   )
 }
