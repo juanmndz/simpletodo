@@ -1,11 +1,19 @@
 {
-  "todos": [{
-    "id": 1,
-    "title": "json-server",
-    "author": "typicode"
-  }, {
-    "id": 2,
-    "title": "json-server",
-    "author": "typicode"
-  }]
+  "todos": [
+    {
+      "text": "Hello",
+      "id": "2bbecb68-9382-4777-8de8-0ae18d2d2345",
+      "completed": false
+    },
+    {
+      "text": "Hello World",
+      "id": "9dc44cef-cb86-45e1-9897-0a68399f4847",
+      "completed": false
+    },
+    {
+      "text": "dd",
+      "id": "bfe08382-04a9-40b3-baf1-8f562706f9ea",
+      "completed": false
+    }
+  ]
 }

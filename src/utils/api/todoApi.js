@@ -1,14 +1,14 @@
-import axios from "axios";
-import uuid from "uuid/v4";
+import axios from 'axios';
+import uuid from 'uuid/v4';
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = 'http://localhost:8080';
 
 class TodoApi {
   constructor() {
-    this.path = "./todos";
+    this.path = '/todos';
   }
 
-  async getAllTodo(args) {
+  async getAllTodo() {
     try {
       const { data } = await axios.get(this.path);
 
@@ -17,6 +17,7 @@ class TodoApi {
       return e;
     }
   }
+
   async createTodo(args) {
     try {
       const { data } = await axios.post(this.path, {

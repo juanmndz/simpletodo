@@ -1,25 +1,30 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import { createTodo, completedTodo, deleteTodo, deletedAllCompletedTodo } from "./actions/todos";
-import "./App.css";
+import { createTodo, completedTodo, deletedTodo, deletedAllCompletedTodo, fetchTodos } from './actions/todos';
+import Todo from './components/Todo';
+import './App.css';
 
 class App extends Component {
   state = {
-    text: ""
+    text: '',
   };
 
-  _handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+  componentDidMount() {
+    this.props.fetchTodos();
+  }
 
   _handleSubmit = e => {
     e.preventDefault();
     this.props.createTodo(this.state.text);
     this.setState({
-      text: ""
+      text: '',
+    });
+  };
+
+  _handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -27,16 +32,18 @@ class App extends Component {
     this.props.completedTodo(id);
   };
 
-  _handleDelete = id => {
-    this.props.deleteTodo(id);
+  _handleDeleted = id => {
+    this.props.deletedTodo(id);
   };
 
   _handleDeletedAllCompleted = () => {
     this.props.deletedAllCompletedTodo();
   }
 
-
   render() {
+    if (!this.props.todos.isFetched) {
+      return <h1>Loading...</h1>;
+    }
     return (
       <div className="App">
         <form className="App-intro" onSubmit={this._handleSubmit}>
@@ -49,20 +56,12 @@ class App extends Component {
           />
         </form>
         <br />
-        {this.props.todos.map(({ text, id, completed }) => (
-          <div key={id}>
-            {text}
-            <input
-              onChange={() => this._handleCompleted(id)}
-              type="checkbox"
-              value={completed}
-            />
-            <button onClick={() => this._handleDelete(id)}>Delete Todo</button>
-          </div>
+        {this.props.todos.data.map(todo => (
+          <Todo {...todo} key={todo.id} />
         ))}
-        <br/>
-        <hr/>
-        <hr/>
+        <br />
+        <hr />
+        <br />
         <button onClick={this._handleDeletedAllCompleted}>Delete All Completed</button>
       </div>
     );
@@ -71,7 +70,7 @@ class App extends Component {
 
 export default connect(
   state => ({
-    todos: state.todos
+    todos: state.todos,
   }),
-  { createTodo, completedTodo, deleteTodo, deletedAllCompletedTodo }
+  { createTodo, completedTodo, deletedTodo, deletedAllCompletedTodo, fetchTodos },
 )(App);
