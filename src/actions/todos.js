@@ -12,6 +12,7 @@
  */
 
 import TodoApi from '../utils/api/todoApi';
+import uuid from 'uuid/v4';
 
 export const FETCH_TODOS = 'FETCH_TODOS';
 export const FETCH_TODOS_SUCCESS = 'FETCH_TODOS_SUCCESS';
@@ -42,17 +43,24 @@ export function fetchTodos() {
 }
 
 export function createTodo(text) {
-  return async (dispatch) => {
-    dispatch({ type: CREATE_TODO });
+  return async (dispatch, getState) => {
+
+    const todo = {
+      text,
+      id: uuid(),
+      completedTodo
+    }
+    dispatch({ type: CREATE_TODO, todo });
 
     try {
-      const data = await TodoApi.createTodo({ text });
+      await TodoApi.createTodo({ todo });
 
-      return dispatch({ type: CREATE_TODO_SUCCESS, data });
+      return dispatch({ type: CREATE_TODO_SUCCESS });
     } catch (error) {
       return dispatch({
         type: CREATE_TODO_ERROR,
         error,
+        todo
       });
     }
   }
